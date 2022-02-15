@@ -10,31 +10,36 @@ import pyb
 import utime
 import task_share
 
-def trigger():
+def trigger(timer):
     my_queue.put(PC0pin.read())
     
 my_queue = task_share.Queue('h', 1000, name="My Queue")
 
-PC1pin = pyb.Pin(pyb.Pin.board.PC1, Pin.OUT_PP)
+PC1pin = pyb.Pin(pyb.Pin.board.PC1, pyb.Pin.OUT_PP)
 PC0pin = pyb.ADC(pyb.Pin.board.PC0)
-tim = pyb.Timer(1, freq=1000, callback=trigger())
+
+n = 0
+
+tim = pyb.Timer(1, freq=1000)
 
 startFlag = False
 waitTime = utime.ticks_ms()
-CSVlist = []
+dataList = []
+flag = True
 
 if __name__ == "__main__":
-    PC1pin.high()
-    while True:
+    while utime.ticks_diff(utime.ticks_ms(),waitTime) < 1000:
+        PC1pin.high()
+    PC1pin.low()
+    tim.callback(trigger)
+    print(my_queue)
+    while flag:
         if my_queue.full():
-            PC1pin.low()
+            tim.deinit()
             while my_queue.any():
-                CSVlist.append(my_queue.get())
+                dataList.append(my_queue.get())
+            print(my_queue)
             my_queue.clear()
-#             waitTime = utime.ticks_ms()
-#             startFlag = True
-            print(csvList)
-            break
-#         elif utime.ticks_diff(utime.ticks_ms,waitTime) > 500 and startFlag:
-#             PC1pin.high()
-#             startFlag = False
+            print(my_queue)
+            flag = False
+    print(my_queue)
