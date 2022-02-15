@@ -4,5 +4,7 @@ This file contains the results from the step response conducted on our RC circui
 ![This graph contains step responses](https://github.com/jfrabosi/Lab-4/blob/main/src/stepResponseLab4.png)
 
 FIGURE 1. Step response plot showing voltage in percentage of maximum voltage against time in milliseconds.
+
+
 ![This graph contains the picture of the setup](https://github.com/jfrabosi/Lab-4/blob/main/src/Lab4Setup.JPG)
 FIGURE 2. Experimental setup with two resistors and one capacitor.
